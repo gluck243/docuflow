@@ -10,21 +10,16 @@ import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/docs")
-class DocumentController(private val documentRepository: DocumentRepository) {
+class DocumentController(private val  documentService: DocumentService) {
 
     @PostMapping("/upload")
-    fun uploadFile(@RequestParam("file") file: MultipartFile): Document {
-        val doc = Document()
-        doc.filename = file.originalFilename
-        doc.contentType = file.contentType
-        doc.size = file.size
-        doc.uploadDate = LocalDateTime.now()
-        return documentRepository.save(doc)
+    fun uploadFile(@RequestParam("file") file: MultipartFile): DocumentDTO {
+        return documentService.upload(file)
     }
 
     @GetMapping
-    fun getAllDocs(): List<Document> {
-        return documentRepository.findAll()
+    fun getAllDocs(): List<DocumentDTO> {
+        return documentService.findAll()
     }
 
 }
