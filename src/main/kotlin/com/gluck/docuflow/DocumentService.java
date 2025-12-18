@@ -17,6 +17,11 @@ public class DocumentService {
     }
 
     public DocumentDTO upload(MultipartFile file) {
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.equals("application/pdf"))
+            throw new InvalidFileException("Only PDF files are allowed. You have submitted " + contentType);
+
         Document doc = new Document();
         doc.setFilename(file.getOriginalFilename());
         doc.setContentType(file.getContentType());
